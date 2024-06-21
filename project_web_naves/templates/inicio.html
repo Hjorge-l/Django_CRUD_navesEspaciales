@@ -1,0 +1,30 @@
+{% extends "base_generica.html" %}
+
+{% block content %}
+{% load static %}
+<h1>Django página de inicio</h1>
+
+  <p>Bienvenido a la web básica y simple que utiliza Django REST Framework, Django, y Python para permitir al usuario
+hacer un mantenimiento CRUD de naves espaciales de series y películas.</p>
+
+<h2>Contenido de la API</h2>
+
+  <h3>Explicacion de uso</h3>
+  <div style="width:100%">
+      <div style="float:left;width:50%">
+        <ul>
+            <li><strong>SISTEMA DE USUARIOS: </strong> #</li>
+            <li><strong>INICIO: </strong> #</li>
+            <li><strong>MOSTRAR DATOS: </strong> #</li>
+            <li><strong>INSERTAR DATOS: </strong> #</li>
+            <li><strong>ACTUALIZAR DATOS: </strong> #</li>
+            <li><strong>BORRAR DATOS: </strong> #</li>
+            <li><strong>BUSCAR DATO ESPECIFICO: </strong> #</li>
+        </ul>
+      </div>
+      <div style="float:right;width:50%">
+          <img src="{% static 'images/nave.jpg' %}" alt="IrisImage" width="500" height="300">
+      </div>
+  </div>
+
+{% endblock %}
