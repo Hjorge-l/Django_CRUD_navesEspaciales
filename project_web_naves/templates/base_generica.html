@@ -42,11 +42,11 @@
                 {% if user.is_authenticated %}
                     <!--TODO: Añadir las urls para activar el funcionamiento del menú-->
                     <ul class="sidebar-nav" style="margin-top: 20px;">
-                        <li><a href="{url 'inicio'}">Inicio</a></li>
+                        <li><a href="{%url 'inicio'%}">Inicio</a></li>
+                        <li><a href="{%url 'insert_data'%}">Insertar nueva nave</a></li>
                         <li><a href="#">Consultar todas las naves</a></li>
-                        <li><a href="#">Consultar nave por id</a></li>
                         <li><a href="#">Consultar naves por nombre</a></li>
-                        <li><a href="#">Insertar nueva nave</a></li>
+                        <li><a href="#">Consultar nave por id</a></li>
                         <li><a href="#">Actualizar nave</a></li>
                         <li><a href="#">Borrar nave</a></li>
                     </ul>

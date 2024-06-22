@@ -1,0 +1,35 @@
+{% extends "base_generica.html" %}
+{% block content %}
+<html>
+    <body>
+        <form method='post'>
+            {% csrf_token %}
+            <h1>Naves espaciales de series y peliculas</h1>
+            <br>
+            <h3>Insertar Datos:</h3>
+            {% if result != '' %}
+                <label style="color:green;">{{ result }}</label>
+            {% endif %}
+            <table class="table table-hover">
+                <tr>
+                    <th><label>Nombre de la Nave:</label></th>
+                    <td><input name="nombre_nave" value="" type="text"/></td>
+                </tr>
+                <tr>
+                    <th><label>Modelo de la Nave:</label></th>
+                    <td><input name="modelo_nave" value="" type="text"/></td>
+                </tr>
+                <tr>
+                    <th><label>Coste en creditos</label></th>
+                    <td><input name="coste_creditos_nave" value="" type="number"/></td>
+                </tr>
+                <tr>
+                    <th><label>Número de pasajeros</label></th>
+                    <td><input name="num_pasajeros_nave" value="" type="number"/></td>
+                </tr>
+            </table>
+            <input type="submit" name="Submit">
+        </form>
+    </body>
+</html>
+{% endblock %}
