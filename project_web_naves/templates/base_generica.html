@@ -16,7 +16,6 @@
 <body>
     <table align="right" style="margin-right: 25px; margin-top: 20px">
         <tbody>
-            <!--TODO: Añadir sistema de usuarios y urls -->
             {% if user.is_authenticated %}
                 <tr>
                     <td>User: <strong>{{ user.username|default:'Guest' }}</strong></td>
@@ -24,14 +23,14 @@
                 <tr>
                     <td><a href="{%url 'logout'%}">Logout</a>
                     <td>
-                    <td><a href="#">Change password</a></td>
+                    <td><a href="{%url 'password_change'%}">Cambiar contraseña</a></td>
                 </tr>
             {% else %}
                 <tr>
                     <td><strong>Usuario:</strong> {{ user.username|default:'Invitado' }}</td>
                 </tr>
                 <tr>
-                    <td><a href="{%url 'login'%}">Login</a></td>
+                    <td><a href="{%url 'inicio'%}">Login</a></td>
                 </tr>
             {% endif %}
         </tbody>
@@ -40,16 +39,18 @@
     <div class="row">
         <div class="col-sm-2">
             {% block sidebar %}
-            <!--TODO: Añadir las urls para activar el funcionamiento del menú-->
-            <ul class="sidebar-nav" style="margin-top: 20px;">
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#">Consultar todas las naves</a></li>
-                <li><a href="#">Consultar nave por id</a></li>
-                <li><a href="#">Consultar naves por nombre</a></li>
-                <li><a href="#">Insertar nueva nave</a></li>
-                <li><a href="#">Actualizar nave</a></li>
-                <li><a href="#">Borrar nave</a></li>
-            </ul>
+                {% if user.is_authenticated %}
+                    <!--TODO: Añadir las urls para activar el funcionamiento del menú-->
+                    <ul class="sidebar-nav" style="margin-top: 20px;">
+                        <li><a href="{url 'inicio'}">Inicio</a></li>
+                        <li><a href="#">Consultar todas las naves</a></li>
+                        <li><a href="#">Consultar nave por id</a></li>
+                        <li><a href="#">Consultar naves por nombre</a></li>
+                        <li><a href="#">Insertar nueva nave</a></li>
+                        <li><a href="#">Actualizar nave</a></li>
+                        <li><a href="#">Borrar nave</a></li>
+                    </ul>
+                {% endif %}
             {% endblock %}
         </div>
         <div class="col-sm-10 ">
