@@ -1,0 +1,28 @@
+{% extends "base_generica.html" %}
+{% block content %}
+<html>
+    <body>
+        <h1>Naves espaciales de series y peliculas</h1>
+
+        <h3> Todos los datos :</h3>
+        <table class="table table-hover">
+            <tr>
+                <td><label>ID de la nave</label></td>
+                <td><label>Nombre de la nave</label></td>
+                <td><label>Modelo de la nave</label></td>
+                <td><label>Creditos</label></td>
+                <td><label>Pasajeros</label></td>
+            </tr>
+            {% for value in datos_nave %}
+                <tr>
+                    <td><strong>{{ value.id_nave }}</strong></td>
+                    <td>{{ value.nombre_nave }}</td>
+                    <td>{{ value.modelo_nave }}</td>
+                    <td>{{ value.coste_creditos_nave }}</td>
+                    <td>{{ value.num_pasajeros_nave }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
+{% endblock %}
