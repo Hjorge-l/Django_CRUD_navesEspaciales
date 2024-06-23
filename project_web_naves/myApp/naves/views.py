@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from myApp.serializer import NaveSerializer
 from myApp.models import naveModel
+from myApp.form import SearchIdForm
 
 
 @api_view(['GET', 'POST'])
@@ -30,3 +31,20 @@ def show_all_data(request):
         datos_nave = serializer.data
         return render(request, "naves/show_all.html",
                       context={"datos_nave": datos_nave})
+
+
+@api_view(['GET'])
+def search_by_id(request):
+    if request.method == 'GET':
+        form = SearchIdForm(request.GET)
+        datos_nave = None
+        if form.is_valid():
+            search_id = form.cleaned_data.get('search_id')
+            try:
+                nave_query_unique = naveModel.objects.get(id_nave=search_id)    # El id es único -> solo devolverá uno
+                serializer = NaveSerializer(nave_query_unique)
+                datos_nave = serializer.data
+            except naveModel.DoesNotExist:
+                datos_nave = None
+        return render(request, 'naves/search_by_id.html',
+                      {'form': form, 'datos_nave': datos_nave})
