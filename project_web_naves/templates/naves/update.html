@@ -1,0 +1,51 @@
+{% extends "base_generica.html" %}
+{% block content %}
+<html>
+    <body>
+        {% csrf_token %}
+        <h1>Naves espaciales de series y peliculas</h1>
+        <h3> Busqueda por id de la nave que queremos actualizar:</h3>
+        <form method='get' action="{%url 'update_by_id'%}">
+            {% csrf_token %}
+            <div class="form-group">
+                <td>{{ form.search_id.label_tag }}</td>
+                <td>{{ form.search_id }}</td>
+            </div>
+            <div>
+                <input type="submit" value="Buscar" name="Submit" class="btn btn-primary">
+            </div>
+        </form>
+        {% if datos_nave %}
+        <h2>Actualizar Datos:</h2>
+        <form method='post' action="{%url 'update_by_id'%}">
+            {% csrf_token %}
+            <input type="hidden" name="search_id" value="{{ request.GET.search_id }}">
+            <table class="table table-hover">
+                <tr>
+                    <th><label>Nombre de la Nave:</label></th>
+                    <td><input name="nombre_nave" value={{datos_nave.nombre_nave}} type="text"/></td>
+                </tr>
+                <tr>
+                    <th><label>Modelo de la Nave:</label></th>
+                    <td><input name="modelo_nave" value={{datos_nave.modelo_nave}} type="text"/></td>
+                </tr>
+                <tr>
+                    <th><label>Coste en creditos</label></th>
+                    <td><input name="coste_creditos_nave" value={{datos_nave.coste_creditos_nave}} type="number"/></td>
+                </tr>
+                <tr>
+                    <th><label>Número de pasajeros</label></th>
+                    <td><input name="num_pasajeros_nave" value="{{ datos_nave.num_pasajeros_nave }}" type="number"/></td>
+                </tr>
+            </table>
+            <input type="submit" value="Actualizar" name="Submit" class="btn btn-primary">
+        </form>
+        {% elif request.GET.search_id %}
+            <h2 style="color : orange;">No se ha encontrado la nave con el id</h2>
+        {% endif %}
+        {% if result %}
+            <h2 style="color : green;">{{result}}</h2>
+        {% endif %}
+    </body>
+</html>
+{% endblock %}

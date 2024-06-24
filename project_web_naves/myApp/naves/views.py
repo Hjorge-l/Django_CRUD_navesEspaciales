@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework import status
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from myApp.serializer import NaveSerializer
 from myApp.models import naveModel
@@ -65,3 +65,35 @@ def search_by_name(request):
                 datos_nave = None
         return render(request, 'naves/search_by_name.html',
                       {'form': form, 'datos_nave': datos_nave})
+
+
+@api_view(['GET', 'PUT', 'POST'])
+def update_by_id(request):
+    if request.method == 'GET':
+        form = SearchIdForm(request.GET)
+        datos_nave = None
+        if form.is_valid():
+            search_id = form.cleaned_data.get('search_id')
+            try:
+                nave_query_unique = naveModel.objects.get(id_nave=search_id)
+                serializer = NaveSerializer(nave_query_unique)
+                datos_nave = serializer.data
+            except naveModel.DoesNotExist:
+                datos_nave = None
+        return render(request, 'naves/update.html',
+                      {'form': form, 'datos_nave': datos_nave})
+    elif request.method == 'POST':
+        search_id = request.POST.get('search_id')
+        datos_nave = get_object_or_404(naveModel, id_nave=search_id)
+        serializer = NaveSerializer(datos_nave, data=request.POST, partial=True)
+        if serializer.is_valid():
+            serializer.save()  # actualizamos en la base de datos
+            result = 'Los datos en la base de datos se han actualizado'
+            return render(request, 'naves/update.html',
+                          context={'form': SearchIdForm(),
+                                   'result': result,
+                                   'datos_nave': serializer.data},
+                          status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
