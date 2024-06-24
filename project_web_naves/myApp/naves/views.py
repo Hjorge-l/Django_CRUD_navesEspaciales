@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from myApp.serializer import NaveSerializer
 from myApp.models import naveModel
-from myApp.form import SearchIdForm
+from myApp.form import SearchIdForm, SearchNameForm
 
 
 @api_view(['GET', 'POST'])
@@ -47,4 +47,21 @@ def search_by_id(request):
             except naveModel.DoesNotExist:
                 datos_nave = None
         return render(request, 'naves/search_by_id.html',
+                      {'form': form, 'datos_nave': datos_nave})
+
+
+@api_view(['GET'])
+def search_by_name(request):
+    if request.method == 'GET':
+        form = SearchNameForm(request.GET)
+        datos_nave = None
+        if form.is_valid():
+            search_name = form.cleaned_data.get('search_name')
+            naves_query_name = naveModel.objects.filter(nombre_nave__icontains=search_name)
+            if naves_query_name.exists():
+                serializer = NaveSerializer(naves_query_name, many=True)
+                datos_nave = serializer.data
+            else:
+                datos_nave = None
+        return render(request, 'naves/search_by_name.html',
                       {'form': form, 'datos_nave': datos_nave})

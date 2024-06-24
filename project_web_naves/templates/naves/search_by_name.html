@@ -4,12 +4,12 @@
     <body>
         <h1>Naves espaciales de series y peliculas</h1>
 
-        <h3> Busqueda por id :</h3>
-        <form method="get" action="{%url 'search_by_id'%}">
+        <h3> Busqueda por nombre :</h3>
+        <form method="get" action="{%url 'search_by_name'%}">
             {% csrf_token %}
             <div class="form-group">
-                <td>{{ form.search_id.label_tag }}</td>
-                <td>{{ form.search_id }}</td>
+                <td>{{ form.search_name.label_tag }}</td>
+                <td>{{ form.search_name }}</td>
             </div>
             <div>
                 <button type = 'submit' class="btn btn-primary">Buscar</button>
@@ -17,7 +17,8 @@
         </form>
         <div>
             {% if datos_nave %}
-                <h1>Resultados de naves buscadas por ID</h1>
+                <h2>Resultados de las naves buscadas por Nombre</h2>
+
                 <table class="table table-hover">
                     <tr>
                         <td><label>ID de la nave</label></td>
@@ -26,15 +27,17 @@
                         <td><label>Coste en creditos</label></td>
                         <td><label>Num de pasajeros</label></td>
                     </tr>
-                    <tr>
-                        <td><strong>{{ datos_nave.id_nave }}</strong></td>
-                        <td>{{ datos_nave.nombre_nave }}</td>
-                        <td>{{ datos_nave.modelo_nave }}</td>
-                        <td>{{ datos_nave.coste_creditos_nave }}</td>
-                        <td>{{ datos_nave.num_pasajeros_nave }}</td>
-                    </tr>
-                    {% elif request.GET.search_id %}
-                        <h3 style="color : orange;">No se ha encontrado la nave con el id</h3>
+                    {%for value in datos_nave %}
+                        <tr>
+                            <td><strong>{{ value.id_nave }}</strong></td>
+                            <td>{{ value.nombre_nave }}</td>
+                            <td>{{ value.modelo_nave }}</td>
+                            <td>{{ value.coste_creditos_nave }}</td>
+                            <td>{{ value.num_pasajeros_nave }}</td>
+                        </tr>
+                    {%endfor%}
+                    {% elif request.GET.search_name %}
+                        <h3 style="color : orange;">No se ha encontrado la nave que contenga ese nombre</h3>
                     {% endif %}
                 </table>
         </div>
