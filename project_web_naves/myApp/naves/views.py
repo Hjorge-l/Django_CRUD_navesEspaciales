@@ -67,7 +67,7 @@ def search_by_name(request):
                       {'form': form, 'datos_nave': datos_nave})
 
 
-@api_view(['GET', 'PUT', 'POST'])
+@api_view(['GET', 'POST'])
 def update_by_id(request):
     if request.method == 'GET':
         form = SearchIdForm(request.GET)
@@ -95,5 +95,32 @@ def update_by_id(request):
                                    'datos_nave': serializer.data},
                           status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'POST'])
+def delete_by_id(request):
+    if request.method == 'GET':
+        form = SearchIdForm(request.GET)
+        datos_nave = None
+        if form.is_valid():
+            search_id = form.cleaned_data.get('search_id')
+            try:
+                nave_query_unique = naveModel.objects.get(id_nave=search_id)
+                serializer = NaveSerializer(nave_query_unique)
+                datos_nave = serializer.data
+            except naveModel.DoesNotExist:
+                datos_nave = None
+        return render(request, 'naves/delete_by_id.html',
+                      {'form': form, 'datos_nave': datos_nave})
+    elif request.method == 'POST':
+        search_id = request.POST.get('search_id')
+        datos_nave = get_object_or_404(naveModel, id_nave=search_id)
+        datos_nave.delete()  # borramos en la base de datos
+        result = 'Los datos han sido borrados de la base de datos'
+        return render(request, 'naves/delete_by_id.html',
+                      context={'result': result,
+                               'form': SearchIdForm()},
+                      status=status.HTTP_200_OK)
+
 
 

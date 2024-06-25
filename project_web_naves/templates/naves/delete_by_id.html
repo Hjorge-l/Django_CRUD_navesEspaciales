@@ -1,0 +1,50 @@
+{% extends "base_generica.html" %}
+{% block content %}
+        <h1>Naves espaciales de series y peliculas</h1>
+
+        <h3> Busqueda por id :</h3>
+        <form method="get" action="{%url 'delete_by_id'%}">
+            {% csrf_token %}
+            <div class="form-group">
+                <td>{{ form.search_id.label_tag }}</td>
+                <td>{{ form.search_id }}</td>
+            </div>
+            <div>
+                <button type = 'submit' class="btn btn-primary">Buscar</button>
+            </div>
+        </form>
+        <div>
+            {% if datos_nave %}
+                <h1>Resultados de naves buscadas por ID</h1>
+                <table class="table table-hover">
+                    <tr>
+                        <td><label>ID de la nave</label></td>
+                        <td><label>Nombre de la nave</label></td>
+                        <td><label>Modelo de la nave</label></td>
+                        <td><label>Coste en creditos</label></td>
+                        <td><label>Num de pasajeros</label></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>{{ datos_nave.id_nave }}</strong></td>
+                        <td>{{ datos_nave.nombre_nave }}</td>
+                        <td>{{ datos_nave.modelo_nave }}</td>
+                        <td>{{ datos_nave.coste_creditos_nave }}</td>
+                        <td>{{ datos_nave.num_pasajeros_nave }}</td>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+                            <form method="post" action="{% url 'delete_by_id' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="search_id" value="{{ datos_nave.id_nave }}">
+                                <input type="submit" value="Borrar" name="Submit" class="btn btn-primary">
+                            </form>
+                {% elif request.GET.search_id %}
+                    <h3 style="color : orange;">No se ha encontrado la nave con el id</h3>
+                {% endif%}
+                {%if result%}
+                    <h3 style="color : green;">{{result}}</h3>
+                {%endif%}
+        </div>
+{% endblock %}
