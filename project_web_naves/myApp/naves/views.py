@@ -9,6 +9,11 @@ from myApp.form import SearchIdForm, SearchNameForm
 
 @api_view(['GET', 'POST'])
 def insert_data(request):
+    # Metodo que estiona solicitudes GET Y POST
+    # GET: muestra la plantilla insert.html al usuario para que pueda introducir
+    #      una nueva nave.
+    # POST: Recoge los datos enviados por el usuario y si son validos, los almacenamos en
+    #       La base de datos, mostrando al usuario que se ha añadido correctamente.
     if request.method == 'GET':
         return render(request, 'naves/insert.html', )
     elif request.method == 'POST':
@@ -25,6 +30,9 @@ def insert_data(request):
 
 @api_view(['GET'])
 def show_all_data(request):
+    # Metodo que estiona solicitudes GET
+    # GET: Recoge todas las tuplas de la base de datos y se las pasamos a la plantilla
+    #      show_all.html para que el usuario las pueda ver
     if request.method == 'GET':
         naves_query = naveModel.objects.all()
         serializer = NaveSerializer(naves_query, many=True)
@@ -35,6 +43,10 @@ def show_all_data(request):
 
 @api_view(['GET'])
 def search_by_id(request):
+    # Metodo que estiona solicitudes GET
+    # GET: muestra el formulario al usuario para que pueda introducir
+    #      un id arbitrario, si está en la base de datos lo validamos y los mostramos mediante
+    #      la plantilla search_by_id y si no le enseñamos al usuario un mensaje
     if request.method == 'GET':
         form = SearchIdForm(request.GET)
         datos_nave = None
@@ -52,6 +64,11 @@ def search_by_id(request):
 
 @api_view(['GET'])
 def search_by_name(request):
+    # Metodo que estiona solicitudes GET
+    # GET: muestra el formulario al usuario para que pueda introducir el nombre de una nave
+    #      arbitraria, si está en la base de datos lo validamos y lo buscamos en la BBDD,
+    #      comprobamos que existe alguno que contenga ese nombre y se lo enseñamos al usuario mediante
+    #      la plantilla search_by_id y si no le enseñamos al usuario un mensaje
     if request.method == 'GET':
         form = SearchNameForm(request.GET)
         datos_nave = None
@@ -70,6 +87,13 @@ def search_by_name(request):
 @api_view(['GET', 'POST'])
 def update_by_id(request):
     if request.method == 'GET':
+        # Metodo que estiona solicitudes GET Y POST
+        # GET: muestra el formulario al usuario para que pueda introducir
+        #      un ID arbitrario, validamos que se introduzcan los datos correctos y lo buscamos en
+        #      la base de datos para luego enseñarlo en un formulario al usuario mediante la plantilla
+        #      update.html para que lo pueda modificar.
+        # POST: Recoge los datos actualizados por el usuario en el formulario y si son validos,
+        #       los actualiza en la base de datos, mostrando al usuario un mensaje.
         form = SearchIdForm(request.GET)
         datos_nave = None
         if form.is_valid():
@@ -99,6 +123,12 @@ def update_by_id(request):
 
 @api_view(['GET', 'POST'])
 def delete_by_id(request):
+    # Metodo que estiona solicitudes GET Y POST
+    # GET: muestra el formulario al usuario para que pueda introducir
+    #      un id arbitrario, si está en la base de datos lo validamos y los mostramos mediante
+    #      la plantilla delete_by_id y si no le enseñamos al usuario un mensaje
+    # POST: Recoge el id de la nave que buscamos y si la encuentra en la BBDD lo borra y
+    #       muesta el usuario un mensaje
     if request.method == 'GET':
         form = SearchIdForm(request.GET)
         datos_nave = None
